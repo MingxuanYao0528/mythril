@@ -27,6 +27,10 @@ from mythril.exceptions import DetectorNotFoundError
 
 from typing import Optional, List
 
+import importlib
+import pkgutil
+import os
+
 
 class ModuleLoader(object, metaclass=Singleton):
     """ModuleLoader
@@ -37,8 +41,10 @@ class ModuleLoader(object, metaclass=Singleton):
     Additional detection modules can be loaded using the register_module function call implemented by the ModuleLoader
     """
 
-    def __init__(self):
+    def __init__(self, custom_modules_directory: str = ""):
         self._modules = []
+        if custom_modules_directory:
+            self._register_custom_modules(custom_modules_directory)
         self._register_mythril_modules()
 
     def register_module(self, detection_module: DetectionModule):
@@ -106,3 +112,25 @@ class ModuleLoader(object, metaclass=Singleton):
                 UserAssertions(),
             ]
         )
+
+    def _register_custom_modules(self, module_dir):
+        # Iterate through all modules in the custom modules directory
+        for (_, name, _) in pkgutil.iter_modules([module_dir]):
+            # create a module spec from the file path
+            spec = importlib.util.spec_from_file_location(name, os.path.join(module_dir, name + '.py'))
+
+            # create a module instance from the spec
+            module = importlib.util.module_from_spec(spec)
+
+            # execute the module
+            spec.loader.exec_module(module)
+
+            # iterate over all items in the module's namespace
+            for item_name in dir(module):
+                # get the actual item
+                item = getattr(module, item_name)
+
+                # check if the item is a subclass of DetectionModule (but is not DetectionModule itself)
+                if isinstance(item, type) and issubclass(item, DetectionModule) and item is not DetectionModule:
+                    # instantiate the class and register the instance
+                    self.register_module(item())

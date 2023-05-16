@@ -109,7 +109,7 @@ class SymExecWrapper:
 
         requires_statespace = (
             compulsory_statespace
-            or len(ModuleLoader().get_detection_modules(EntryPoint.POST, modules)) > 0
+            or len(ModuleLoader(custom_modules_directory).get_detection_modules(EntryPoint.POST, modules)) > 0
         )
         if not contract.creation_code:
             self.accounts = {hex(ACTORS.attacker.value): attacker_account}
@@ -154,7 +154,7 @@ class SymExecWrapper:
             world_state.put_account(account)
 
         if run_analysis_modules:
-            analysis_modules = ModuleLoader().get_detection_modules(
+            analysis_modules = ModuleLoader(custom_modules_directory).get_detection_modules(
                 EntryPoint.CALLBACK, modules
             )
             self.laser.register_hooks(
