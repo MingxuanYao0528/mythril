@@ -148,6 +148,7 @@ class WorldState:
         creator=None,
         code=None,
         nonce=0,
+        symbolic_balance=False,
     ) -> Account:
         """Create non-contract account.
 
@@ -181,7 +182,8 @@ class WorldState:
         if code:
             new_account.code = code
         new_account.nonce = nonce
-        new_account.set_balance(symbol_factory.BitVecVal(balance, 256))
+        if not symbolic_balance:
+            new_account.set_balance(symbol_factory.BitVecVal(balance, 256))
 
         self.put_account(new_account)
         return new_account
