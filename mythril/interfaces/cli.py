@@ -188,10 +188,6 @@ def get_cache_parser() -> ArgumentParser:
     )
 
     return parser
-            )
-
-    return parser
-
 
 def get_rpc_parser() -> ArgumentParser:
     """
