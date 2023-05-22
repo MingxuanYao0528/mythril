@@ -70,6 +70,7 @@ class MythrilAnalyzer:
         args.iprof = cmd_args.enable_iprof
         args.solver_log = cmd_args.solver_log
         args.transaction_sequences = cmd_args.transaction_sequences
+        args.cache_folder = cmd_args.cache_folder
 
         if args.pruning_factor is None:
             if self.execution_timeout > LARGE_TIME:

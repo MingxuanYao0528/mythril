@@ -20,6 +20,7 @@ class Args(object, metaclass=Singleton):
         self.use_integer_module = True
         self.use_issue_annotations = False
         self.solc_args = None
+        self.cache_folder = None
 
 
 args = Args()

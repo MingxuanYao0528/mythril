@@ -296,6 +296,7 @@ def main() -> None:
             creation_input_parser,
             runtime_input_parser,
             output_parser,
+            cache_parser,
         ],
         aliases=ANALYZE_LIST[1:],
         formatter_class=RawTextHelpFormatter,
@@ -312,6 +313,7 @@ def main() -> None:
             utilities_parser,
             creation_input_parser,
             runtime_input_parser,
+            cache_parser,
         ],
         formatter_class=RawTextHelpFormatter,
     )
