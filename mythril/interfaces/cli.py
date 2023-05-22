@@ -173,6 +173,25 @@ def get_output_parser() -> ArgumentParser:
     )
     return parser
 
+def get_cache_parser() -> ArgumentParser:
+    """
+    Get parser which handles cache path
+    :return: Parser
+    """
+    parser = argparse.ArgumentParser(add_help=False)
+
+    parser.add_argument(
+        "-e",
+        "--cache-folder",
+        help="cache folder path",
+        metavar="<path>",
+    )
+
+    return parser
+            )
+
+    return parser
+
 
 def get_rpc_parser() -> ArgumentParser:
     """
@@ -248,6 +267,7 @@ def main() -> None:
     runtime_input_parser = get_runtime_input_parser()
     creation_input_parser = get_creation_input_parser()
     output_parser = get_output_parser()
+    cache_parser = get_cache_parser()
 
     parser = argparse.ArgumentParser(
         description="Security analysis of Ethereum smart contracts"
@@ -267,6 +287,7 @@ def main() -> None:
             creation_input_parser,
             runtime_input_parser,
             output_parser,
+            cache_parser,
         ],
         formatter_class=RawTextHelpFormatter,
     )
